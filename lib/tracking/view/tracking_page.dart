@@ -222,10 +222,8 @@ class _TrackerScreenState extends State<TrackerScreen>
                 // y = center_y + r * sin(theta)
                 // We subtract half the dot size to center the widget on the
                 // calculated point.
-                final x =
-                    center.dx + radius * cos(dot.angle) - (dot.size / 2);
-                final y =
-                    center.dy + radius * sin(dot.angle) - (dot.size / 2);
+                final x = center.dx + radius * cos(dot.angle) - (dot.size / 2);
+                final y = center.dy + radius * sin(dot.angle) - (dot.size / 2);
 
                 return Positioned(
                   left: x,
@@ -243,8 +241,7 @@ class _TrackerScreenState extends State<TrackerScreen>
                         // Since we are inside a Positioned widget,
                         // 'details.globalPosition' is safest
                         // provided the stack covers the screen.
-                        final box =
-                            context.findRenderObject()! as RenderBox;
+                        final box = context.findRenderObject()! as RenderBox;
                         final localTouch = box.globalToLocal(
                           details.globalPosition,
                         );
