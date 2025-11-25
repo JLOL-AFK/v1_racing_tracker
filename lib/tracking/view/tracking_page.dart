@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-/// Data model for a single tracked dot.
-
 class TrackedDot {
   TrackedDot({
     required this.id,
@@ -21,17 +19,18 @@ class TrackerScreen extends StatefulWidget {
   const TrackerScreen({super.key});
 
   @override
-  State<TrackerScreen> createState() => _TrackerScreenState();
+  State<TrackerScreen> createState() => TrackerScreenState();
 }
 
-class _TrackerScreenState extends State<TrackerScreen>
+class TrackerScreenState extends State<TrackerScreen>
     with SingleTickerProviderStateMixin {
   // Configuration
   final double _ringPadding = 7; //20.0; // Space from edge of screen
   final double _strokeWidth = 1; // Thickness of the ring
 
   // State
-  List<TrackedDot> _dots = [];
+  @visibleForTesting
+  List<TrackedDot> dots = [];
   bool _isSimulating = false;
   Timer? _simulationTimer;
 
@@ -75,7 +74,7 @@ class _TrackerScreenState extends State<TrackerScreen>
     }
 
     setState(() {
-      _dots = newDots;
+      dots = newDots;
     });
   }
 
@@ -101,7 +100,7 @@ class _TrackerScreenState extends State<TrackerScreen>
   void _animateDotsRandomly() {
     final random = Random();
     setState(() {
-      for (final dot in _dots) {
+      for (final dot in dots) {
         // Move dot by a small random amount (-0.5 to +0.5 radians)
         final change = random.nextDouble() - 0.5;
         dot.angle = (dot.angle + change) % (2 * pi);
@@ -216,7 +215,7 @@ class _TrackerScreenState extends State<TrackerScreen>
               ),
 
               // 3. The Dots
-              ..._dots.map((dot) {
+              ...dots.map((dot) {
                 // Convert polar coordinates (angle, radius) to Cartesian (x, y)
                 // x = center_x + r * cos(theta)
                 // y = center_y + r * sin(theta)
