@@ -16,8 +16,8 @@ class App extends StatelessWidget {
           theme: ThemeData(
             useMaterial3: true,
             // This makes elements such as buttons have a fewer pixels in
-            // padding and general spacing. good for devices with limited screen
-            // real state.
+            // padding and general spacing. good for devices
+            // with limited screen real state.
             visualDensity: VisualDensity.compact,
             // When in ambient mode, change the apps color scheme
             colorScheme: isAmbientModeActive
