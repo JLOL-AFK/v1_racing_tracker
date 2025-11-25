@@ -27,7 +27,8 @@ class TrackerScreen extends StatefulWidget {
   State<TrackerScreen> createState() => _TrackerScreenState();
 }
 
-class _TrackerScreenState extends State<TrackerScreen> with SingleTickerProviderStateMixin {
+class _TrackerScreenState extends State<TrackerScreen>
+    with SingleTickerProviderStateMixin {
   // Configuration
   final double _ringPadding = 7;//20.0; // Space from edge of screen
   final double _strokeWidth = 1.0; // Thickness of the ring
@@ -87,8 +88,8 @@ class _TrackerScreenState extends State<TrackerScreen> with SingleTickerProvider
 
     if (_isSimulating) {
       // Update positions every 2 seconds to simulate live data
-      _simulationTimer = Timer.periodic(const Duration(milliseconds: 144), (timer) {
-        _animateDotsRandomly();
+      _simulationTimer = Timer.periodic(const Duration(milliseconds: 144),
+              (timer) {_animateDotsRandomly();
       });
     } else {
       _simulationTimer?.cancel();
@@ -112,7 +113,8 @@ class _TrackerScreenState extends State<TrackerScreen> with SingleTickerProvider
     // Calculate angle from center to touch point using atan2
     // atan2 returns -pi to +pi. We normalize this to 0 to 2pi logic if needed,
     // but standard trig works fine with raw values for positioning.
-    double touchAngle = atan2(localPosition.dy - center.dy, localPosition.dx - center.dx);
+    double touchAngle = atan2(localPosition.dy - center.dy,
+        localPosition.dx - center.dx);
 
     setState(() {
       dot.angle = touchAngle;
@@ -121,14 +123,18 @@ class _TrackerScreenState extends State<TrackerScreen> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
-    // Using LayoutBuilder to ensure we know the screen size (crucial for watches)
+    // Using LayoutBuilder to ensure we know the screen size
+    // (crucial for watches)
 
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
-          // Determine center and radius based on the shortest side (usually diameter on watch)
-          final center = Offset(constraints.maxWidth / 2, constraints.maxHeight / 2);
-          final double diameter = min(constraints.maxWidth, constraints.maxHeight);
+          // Determine center and radius based on the shortest side
+          // (usually diameter on watch)
+          final center =
+          Offset(constraints.maxWidth / 2, constraints.maxHeight / 2);
+          final double diameter =
+          min(constraints.maxWidth, constraints.maxHeight);
           final double radius = (diameter / 2) - _ringPadding;
 
           return Stack(
@@ -147,7 +153,8 @@ class _TrackerScreenState extends State<TrackerScreen> with SingleTickerProvider
                     // Optional: Add a faint glow or gradient for modern look
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.blueAccent.withValues(alpha: 0.1),//withOpacity(0.1),
+                        color: Colors.blueAccent.withValues(alpha: 0.1),
+                        //withOpacity(0.1),
                         blurRadius: 10,
                         spreadRadius: 2,
                       )
@@ -164,7 +171,8 @@ class _TrackerScreenState extends State<TrackerScreen> with SingleTickerProvider
                     IconButton(
                       icon: Icon(
                         _isSimulating ? Icons.radar : Icons.radar_outlined,
-                        color: _isSimulating ? const Color(0xFF00E5FF) : Colors.grey,
+                        color: _isSimulating ? const Color(0xFF00E5FF) :
+                        Colors.grey,
                         size: 32,
                       ),
                       onPressed: _toggleSimulation,
@@ -173,7 +181,8 @@ class _TrackerScreenState extends State<TrackerScreen> with SingleTickerProvider
                     Text(
                       _isSimulating ? "TRACKING" : "MANUAL",
                       style: TextStyle(
-                        color: _isSimulating ? const Color(0xFF00E5FF) : Colors.grey,
+                        color: _isSimulating ? const Color(0xFF00E5FF) :
+                        Colors.grey,
                         fontSize: 10,
                         letterSpacing: 1.2,
                         fontWeight: FontWeight.bold,
@@ -186,7 +195,8 @@ class _TrackerScreenState extends State<TrackerScreen> with SingleTickerProvider
                           onTap: _randomizeDots,
                           child: const Text(
                             "Reset",
-                            style: TextStyle(color: Colors.white54, fontSize: 10),
+                            style: TextStyle(color: Colors.white54,
+                                fontSize: 10),
                           ),
                         ),
                       )
@@ -199,24 +209,33 @@ class _TrackerScreenState extends State<TrackerScreen> with SingleTickerProvider
                 // Convert polar coordinates (angle, radius) to Cartesian (x, y)
                 // x = center_x + r * cos(theta)
                 // y = center_y + r * sin(theta)
-                // We subtract half the dot size to center the widget on the calculated point.
-                final double x = center.dx + radius * cos(dot.angle) - (dot.size / 2);
-                final double y = center.dy + radius * sin(dot.angle) - (dot.size / 2);
+                // We subtract half the dot size to center the widget on the
+                // calculated point.
+                final double x = center.dx + radius * cos(dot.angle) -
+                    (dot.size / 2);
+                final double y = center.dy + radius * sin(dot.angle) -
+                    (dot.size / 2);
 
                 return Positioned(
                   left: x,
                   top: y,
                   child: GestureDetector(
-                    // Hit testing for small dots can be tricky, so we add a transparent margin
+                    // Hit testing for small dots can be tricky, so we add a
+                    // transparent margin
                     behavior: HitTestBehavior.translucent,
                     onPanUpdate: (details) {
-                      // Disable manual movement if simulation is running to avoid conflict
+                      // Disable manual movement if simulation is running to
+                      // avoid conflict
                       if (!_isSimulating) {
-                        // We need the touch position relative to the whole stack/screen
-                        // Since we are inside a Positioned widget, 'details.globalPosition' is safest
+                        // We need the touch position relative to the whole
+                        // stack/screen
+                        // Since we are inside a Positioned widget,
+                        // 'details.globalPosition' is safest
                         // provided the stack covers the screen.
-                        RenderBox box = context.findRenderObject() as RenderBox;
-                        Offset localTouch = box.globalToLocal(details.globalPosition);
+                        RenderBox box = context.findRenderObject()! as
+                        RenderBox;
+                        Offset localTouch = box.globalToLocal(
+                            details.globalPosition);
                         _updateDotPosition(dot, localTouch, center);
                       }
                     },
