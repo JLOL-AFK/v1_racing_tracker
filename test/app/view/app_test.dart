@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:my_wear_app/ambient_mode/ambient_mode.dart';
 import 'package:my_wear_app/app/app.dart';
-import 'package:my_wear_app/counter/counter.dart';
+import 'package:my_wear_app/tracking/tracking.dart';
 
 import '../../helpers/helpers.dart';
 
@@ -12,9 +12,9 @@ void main() {
       AmbientModeListener.instance.value = false;
     });
 
-    testWidgets('renders CounterPage', (tester) async {
+    testWidgets('renders TrackerScreen', (tester) async {
       await tester.pumpWidget(const App());
-      expect(find.byType(CounterPage), findsOneWidget);
+      expect(find.byType(TrackerScreen), findsOneWidget);
     });
 
     group('renders the correct color scheme', () {

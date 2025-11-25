@@ -19,8 +19,7 @@ class CounterPage extends StatelessWidget {
 }
 
 class CounterView extends StatefulWidget {
-  CounterView({super.key, @visibleForTesting Stream<RotaryEvent>?
-  rotaryEvents})
+  CounterView({super.key, @visibleForTesting Stream<RotaryEvent>? rotaryEvents})
     : rotaryEvents = rotaryEvents ?? wearable_rotary.rotaryEvents;
 
   final Stream<RotaryEvent> rotaryEvents;

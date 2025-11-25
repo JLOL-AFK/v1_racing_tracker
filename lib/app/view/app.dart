@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_wear_app/ambient_mode/ambient_mode.dart';
-import 'package:my_wear_app/counter/counter.dart';
-import 'package:my_wear_app/tracking/tracking.dart';
 import 'package:my_wear_app/l10n/l10n.dart';
+import 'package:my_wear_app/tracking/tracking.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -10,7 +9,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AmbientModeBuilder(
-      child: const TrackerScreen(),/*CounterPage(),*/
+      child: const TrackerScreen(),
       builder: (context, isAmbientModeActive, child) {
         return MaterialApp(
           theme: ThemeData(

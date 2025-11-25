@@ -6,7 +6,6 @@ import 'package:flutter/widget_previews.dart';
 /// Data model for a single tracked dot.
 
 class TrackedDot {
-
   TrackedDot({
     required this.id,
     required this.color,
@@ -19,7 +18,6 @@ class TrackedDot {
   double size;
 }
 
-
 class TrackerScreen extends StatefulWidget {
   const TrackerScreen({super.key});
 
@@ -30,7 +28,7 @@ class TrackerScreen extends StatefulWidget {
 class _TrackerScreenState extends State<TrackerScreen>
     with SingleTickerProviderStateMixin {
   // Configuration
-  final double _ringPadding = 7;//20.0; // Space from edge of screen
+  final double _ringPadding = 7; //20.0; // Space from edge of screen
   final double _strokeWidth = 1.0; // Thickness of the ring
 
   // State
@@ -68,11 +66,13 @@ class _TrackerScreenState extends State<TrackerScreen>
 
     List<TrackedDot> newDots = [];
     for (int i = 0; i < count; i++) {
-      newDots.add(TrackedDot(
-        id: 'dot_$i',
-        color: _palette[random.nextInt(_palette.length)],
-        angle: random.nextDouble() * 2 * pi,
-      ));
+      newDots.add(
+        TrackedDot(
+          id: 'dot_$i',
+          color: _palette[random.nextInt(_palette.length)],
+          angle: random.nextDouble() * 2 * pi,
+        ),
+      );
     }
 
     setState(() {
@@ -88,8 +88,10 @@ class _TrackerScreenState extends State<TrackerScreen>
 
     if (_isSimulating) {
       // Update positions every 2 seconds to simulate live data
-      _simulationTimer = Timer.periodic(const Duration(milliseconds: 144),
-              (timer) {_animateDotsRandomly();
+      _simulationTimer = Timer.periodic(const Duration(milliseconds: 144), (
+        timer,
+      ) {
+        _animateDotsRandomly();
       });
     } else {
       _simulationTimer?.cancel();
@@ -113,8 +115,10 @@ class _TrackerScreenState extends State<TrackerScreen>
     // Calculate angle from center to touch point using atan2
     // atan2 returns -pi to +pi. We normalize this to 0 to 2pi logic if needed,
     // but standard trig works fine with raw values for positioning.
-    double touchAngle = atan2(localPosition.dy - center.dy,
-        localPosition.dx - center.dx);
+    double touchAngle = atan2(
+      localPosition.dy - center.dy,
+      localPosition.dx - center.dx,
+    );
 
     setState(() {
       dot.angle = touchAngle;
@@ -131,10 +135,14 @@ class _TrackerScreenState extends State<TrackerScreen>
         builder: (context, constraints) {
           // Determine center and radius based on the shortest side
           // (usually diameter on watch)
-          final center =
-          Offset(constraints.maxWidth / 2, constraints.maxHeight / 2);
-          final double diameter =
-          min(constraints.maxWidth, constraints.maxHeight);
+          final center = Offset(
+            constraints.maxWidth / 2,
+            constraints.maxHeight / 2,
+          );
+          final double diameter = min(
+            constraints.maxWidth,
+            constraints.maxHeight,
+          );
           final double radius = (diameter / 2) - _ringPadding;
 
           return Stack(
@@ -147,7 +155,7 @@ class _TrackerScreenState extends State<TrackerScreen>
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: Colors.white,//white24,
+                      color: Colors.white, //white24,
                       width: _strokeWidth,
                     ),
                     // Optional: Add a faint glow or gradient for modern look
@@ -157,7 +165,7 @@ class _TrackerScreenState extends State<TrackerScreen>
                         //withOpacity(0.1),
                         blurRadius: 10,
                         spreadRadius: 2,
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -171,8 +179,9 @@ class _TrackerScreenState extends State<TrackerScreen>
                     IconButton(
                       icon: Icon(
                         _isSimulating ? Icons.radar : Icons.radar_outlined,
-                        color: _isSimulating ? const Color(0xFF00E5FF) :
-                        Colors.grey,
+                        color: _isSimulating
+                            ? const Color(0xFF00E5FF)
+                            : Colors.grey,
                         size: 32,
                       ),
                       onPressed: _toggleSimulation,
@@ -181,25 +190,28 @@ class _TrackerScreenState extends State<TrackerScreen>
                     Text(
                       _isSimulating ? "TRACKING" : "MANUAL",
                       style: TextStyle(
-                        color: _isSimulating ? const Color(0xFF00E5FF) :
-                        Colors.grey,
+                        color: _isSimulating
+                            ? const Color(0xFF00E5FF)
+                            : Colors.grey,
                         fontSize: 10,
                         letterSpacing: 1.2,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    if(!_isSimulating)
+                    if (!_isSimulating)
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: GestureDetector(
                           onTap: _randomizeDots,
                           child: const Text(
                             "Reset",
-                            style: TextStyle(color: Colors.white54,
-                                fontSize: 10),
+                            style: TextStyle(
+                              color: Colors.white54,
+                              fontSize: 10,
+                            ),
                           ),
                         ),
-                      )
+                      ),
                   ],
                 ),
               ),
@@ -211,10 +223,10 @@ class _TrackerScreenState extends State<TrackerScreen>
                 // y = center_y + r * sin(theta)
                 // We subtract half the dot size to center the widget on the
                 // calculated point.
-                final double x = center.dx + radius * cos(dot.angle) -
-                    (dot.size / 2);
-                final double y = center.dy + radius * sin(dot.angle) -
-                    (dot.size / 2);
+                final double x =
+                    center.dx + radius * cos(dot.angle) - (dot.size / 2);
+                final double y =
+                    center.dy + radius * sin(dot.angle) - (dot.size / 2);
 
                 return Positioned(
                   left: x,
@@ -232,10 +244,11 @@ class _TrackerScreenState extends State<TrackerScreen>
                         // Since we are inside a Positioned widget,
                         // 'details.globalPosition' is safest
                         // provided the stack covers the screen.
-                        RenderBox box = context.findRenderObject()! as
-                        RenderBox;
+                        RenderBox box =
+                            context.findRenderObject()! as RenderBox;
                         Offset localTouch = box.globalToLocal(
-                            details.globalPosition);
+                          details.globalPosition,
+                        );
                         _updateDotPosition(dot, localTouch, center);
                       }
                     },
