@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/widget_previews.dart';
 
 /// Data model for a single tracked dot.
 
@@ -29,7 +28,7 @@ class _TrackerScreenState extends State<TrackerScreen>
     with SingleTickerProviderStateMixin {
   // Configuration
   final double _ringPadding = 7; //20.0; // Space from edge of screen
-  final double _strokeWidth = 1.0; // Thickness of the ring
+  final double _strokeWidth = 1; // Thickness of the ring
 
   // State
   List<TrackedDot> _dots = [];
@@ -62,10 +61,10 @@ class _TrackerScreenState extends State<TrackerScreen>
   void _randomizeDots() {
     final random = Random();
     // Generate between 3 and 5 dots
-    int count = 3 + random.nextInt(3);
+    final count = 3 + random.nextInt(3);
 
-    List<TrackedDot> newDots = [];
-    for (int i = 0; i < count; i++) {
+    final newDots = <TrackedDot>[];
+    for (var i = 0; i < count; i++) {
       newDots.add(
         TrackedDot(
           id: 'dot_$i',
@@ -102,7 +101,7 @@ class _TrackerScreenState extends State<TrackerScreen>
   void _animateDotsRandomly() {
     final random = Random();
     setState(() {
-      for (var dot in _dots) {
+      for (final dot in _dots) {
         // Move dot by a small random amount (-0.5 to +0.5 radians)
         final change = random.nextDouble() - 0.5;
         dot.angle = (dot.angle + change) % (2 * pi);
@@ -115,7 +114,7 @@ class _TrackerScreenState extends State<TrackerScreen>
     // Calculate angle from center to touch point using atan2
     // atan2 returns -pi to +pi. We normalize this to 0 to 2pi logic if needed,
     // but standard trig works fine with raw values for positioning.
-    double touchAngle = atan2(
+    final touchAngle = atan2(
       localPosition.dy - center.dy,
       localPosition.dx - center.dx,
     );
@@ -143,7 +142,7 @@ class _TrackerScreenState extends State<TrackerScreen>
             constraints.maxWidth,
             constraints.maxHeight,
           );
-          final double radius = (diameter / 2) - _ringPadding;
+          final radius = (diameter / 2) - _ringPadding;
 
           return Stack(
             children: [
@@ -188,7 +187,7 @@ class _TrackerScreenState extends State<TrackerScreen>
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      _isSimulating ? "TRACKING" : "MANUAL",
+                      _isSimulating ? 'TRACKING' : 'MANUAL',
                       style: TextStyle(
                         color: _isSimulating
                             ? const Color(0xFF00E5FF)
@@ -200,11 +199,11 @@ class _TrackerScreenState extends State<TrackerScreen>
                     ),
                     if (!_isSimulating)
                       Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding: const EdgeInsets.only(top: 8),
                         child: GestureDetector(
                           onTap: _randomizeDots,
                           child: const Text(
-                            "Reset",
+                            'Reset',
                             style: TextStyle(
                               color: Colors.white54,
                               fontSize: 10,
@@ -223,9 +222,9 @@ class _TrackerScreenState extends State<TrackerScreen>
                 // y = center_y + r * sin(theta)
                 // We subtract half the dot size to center the widget on the
                 // calculated point.
-                final double x =
+                final x =
                     center.dx + radius * cos(dot.angle) - (dot.size / 2);
-                final double y =
+                final y =
                     center.dy + radius * sin(dot.angle) - (dot.size / 2);
 
                 return Positioned(
@@ -244,9 +243,9 @@ class _TrackerScreenState extends State<TrackerScreen>
                         // Since we are inside a Positioned widget,
                         // 'details.globalPosition' is safest
                         // provided the stack covers the screen.
-                        RenderBox box =
+                        final box =
                             context.findRenderObject()! as RenderBox;
-                        Offset localTouch = box.globalToLocal(
+                        final localTouch = box.globalToLocal(
                           details.globalPosition,
                         );
                         _updateDotPosition(dot, localTouch, center);
