@@ -144,6 +144,8 @@ class TrackerScreenState extends State<TrackerScreen>
           final radius = (diameter / 2) - _ringPadding;
 
           return Stack(
+            //key for finding the track/ring area
+            key: const Key('tracker_stack'),
             children: [
               // 1. The Visual Ring (Track)
               Center(
@@ -228,6 +230,8 @@ class TrackerScreenState extends State<TrackerScreen>
                   left: x,
                   top: y,
                   child: GestureDetector(
+                    //key for grabbing a specific dot to drag
+                    key: Key(dot.id),
                     // Hit testing for small dots can be tricky, so we add a
                     // transparent margin
                     behavior: HitTestBehavior.translucent,
